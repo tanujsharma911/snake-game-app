@@ -1,56 +1,139 @@
-# Welcome to your Expo app 👋
+<h1 align="center">Snake Game</h1>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center">
+	A simple swipe-controlled Snake game built with Expo and React Native.
+</p>
 
-## Get started
+<p align="center">
+	<img src="https://img.shields.io/badge/Expo-57.0.23-000020?logo=expo&logoColor=white" alt="Expo 57.0.23" />
+	<img src="https://img.shields.io/badge/React%20Native-0.86.3-61DAFB?logo=react&logoColor=black" alt="React Native 0.86.3" />
+	<img src="https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white" alt="TypeScript 6.0.3" />
+	<img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License" />
+</p>
 
-1. Install dependencies
+## Screen
 
-   ```bash
-   npm install
-   ```
+The game screen contains the current score, a restart action, and a bordered board with a blue snake and red food.
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+┌──────────────────────────────┐
+│           Game Screen        │
+│             Score            │
+│           [Restart]           │
+│                              │
+│        ┌──────────────┐      │
+│        │              │      │
+│        │  ● ● ●   ●   │      │  Blue: snake
+│        │              │      │  Red: food
+│        │              │      │
+│        └──────────────┘      │
+└──────────────────────────────┘
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-### Other setup steps
+- Swipe in four directions to control the snake.
+- The snake moves continuously at a 100 ms interval.
+- Eating food increases the score by 10 points and places new food randomly.
+- The game ends when the snake leaves the board.
+- Restart returns the snake, food, direction, score, and game state to their defaults.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Getting Started
 
-## Learn more
+### Prerequisites
 
-To learn more about developing your project with Expo, look at the following resources:
+- Node.js
+- pnpm
+- An Expo-compatible device, simulator, or web browser
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Installation
 
-## Join the community
+```bash
+pnpm install
+```
 
-Join our community of developers creating universal apps.
+### Run the project
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+# Start the Expo development server
+pnpm start
+
+# Open a platform directly
+pnpm ios
+pnpm android
+pnpm web
+```
+
+## Controls
+
+On a touch device, swipe across the board to change direction:
+
+| Gesture     | Direction |
+| ----------- | --------- |
+| Swipe up    | Up        |
+| Swipe down  | Down      |
+| Swipe left  | Left      |
+| Swipe right | Right     |
+
+## Game Flow
+
+```mermaid
+flowchart TD
+		A[Open app] --> B[Initialize snake, food, score, and direction]
+		B --> C{Game over?}
+		C -- No --> D{Paused?}
+		D -- Yes --> C
+		D -- No --> E[Move snake every 100 ms]
+		E --> F{Hits board boundary?}
+		F -- Yes --> G[End game]
+		F -- No --> H{Eats food?}
+		H -- Yes --> I[Add 10 points and spawn food]
+		H -- No --> J[Remove tail segment]
+		I --> C
+		J --> C
+		G --> K[Press Restart]
+		K --> B
+```
+
+## Architecture
+
+```mermaid
+flowchart LR
+		R[src/app/index.tsx] --> G[src/components/Game.tsx]
+		G --> S[src/components/Snake.tsx]
+		G --> F[src/components/Food.tsx]
+		G --> T[src/types/types.ts]
+		G --> GH[react-native-gesture-handler]
+		G --> NW[NativeWind styles]
+```
+
+The `Game` component owns movement, collision detection, score, food placement, and restart state. `Snake` and `Food` are presentational components that render coordinates on the board.
+
+## Project Structure
+
+```text
+src/
+├── app/
+│   ├── _layout.tsx       # Expo Router layout
+│   └── index.tsx         # Application entry screen
+├── components/
+│   ├── Food.tsx          # Food renderer
+│   ├── Game.tsx          # Game state and rules
+│   └── Snake.tsx         # Snake renderer
+└── types/
+		└── types.ts          # Shared game types
+```
+
+## Scripts
+
+| Command        | Description                       |
+| -------------- | --------------------------------- |
+| `pnpm start`   | Start the Expo development server |
+| `pnpm ios`     | Run the app on iOS                |
+| `pnpm android` | Run the app on Android            |
+| `pnpm web`     | Run the app in a browser          |
+| `pnpm lint`    | Run Expo linting                  |
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
