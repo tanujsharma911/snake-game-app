@@ -15,6 +15,8 @@
 
 The game screen contains the current score, a restart action, and a bordered board with a blue snake and red food.
 
+The title and score use the bundled Patrick Hand font, which is loaded before the app renders.
+
 ```text
 ┌──────────────────────────────┐
 │           Game Screen        │
@@ -58,9 +60,11 @@ pnpm install
 # Start the Expo development server
 pnpm start
 
-# Open a platform directly
+# Build and run the native app
 pnpm ios
 pnpm android
+
+# Open the web app
 pnpm web
 ```
 
@@ -129,8 +133,8 @@ src/
 | Command        | Description                       |
 | -------------- | --------------------------------- |
 | `pnpm start`   | Start the Expo development server |
-| `pnpm ios`     | Run the app on iOS                |
-| `pnpm android` | Run the app on Android            |
+| `pnpm ios`     | Build and run the app on iOS      |
+| `pnpm android` | Build and run the app on Android  |
 | `pnpm web`     | Run the app in a browser          |
 | `pnpm lint`    | Run Expo linting                  |
 
